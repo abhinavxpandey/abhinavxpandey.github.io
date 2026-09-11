@@ -2,8 +2,43 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<script>
+(function(){
+  try{
+    var saved = localStorage.getItem("theme");
+    var dark = saved === "dark" || (!saved && window.matchMedia("(prefers-color-scheme: dark)").matches);
+    if (dark) document.documentElement.classList.add("dark");
+  }catch(e){}
+})();
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Abhinav Pandey</title>
+
+<meta name="description" content="Abhinav Pandey — Computer Science undergraduate focused on software engineering and backend systems.">
+<meta property="og:title" content="Abhinav Pandey">
+<meta property="og:description" content="Computer Science undergraduate focused on software engineering and backend systems.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Abhinav Pandey">
+<meta name="twitter:description" content="Computer Science undergraduate focused on software engineering and backend systems.">
+
+<meta name="theme-color" id="themeColorMeta" content="#ffffff">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='14'%20fill='%233452d9'/%3E%3Ctext%20x='32'%20y='42'%20font-family='Georgia,serif'%20font-size='28'%20fill='white'%20text-anchor='middle'%3EAP%3C/text%3E%3C/svg%3E">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Abhinav Pandey",
+  "email": "emailtoabhinavpandey@gmail.com",
+  "sameAs": ["https://github.com/abhinavxpandey"],
+  "jobTitle": "Computer Science undergraduate",
+  "affiliation": {
+    "@type": "CollegeOrUniversity",
+    "name": "Assam University"
+  }
+}
+</script>
 
 <style>
 :root{
@@ -12,7 +47,7 @@
     --soft:#f7f7f5;
     --text:#171717;
     --muted:#666;
-    --faint:#999;
+    --faint:#757575;
     --line:#e8e8e8;
     --border:#dedede;
     --shadow:rgba(0,0,0,.06);
@@ -24,13 +59,13 @@
     --section-pad:clamp(48px, 9vw, 90px);
 }
 
-body.dark{
+html.dark{
     --bg:#0e0f10;
     --surface:#151618;
     --soft:#1a1c1e;
     --text:#f2f2f0;
     --muted:#a7a7a3;
-    --faint:#777;
+    --faint:#8a8a86;
     --line:#28292b;
     --border:#333537;
     --shadow:rgba(0,0,0,.3);
@@ -86,6 +121,25 @@ img{
     padding-right:var(--gutter);
 }
 
+/* Skip link */
+
+.skip-link{
+    position:absolute;
+    left:12px;
+    top:-48px;
+    background:var(--surface);
+    color:var(--text);
+    padding:10px 16px;
+    border:1px solid var(--border);
+    z-index:100;
+    font-size:14px;
+    transition:top .2s ease;
+}
+
+.skip-link:focus{
+    top:12px;
+}
+
 /* Header */
 
 header{
@@ -118,7 +172,7 @@ nav{
 .nav-right{
     display:flex;
     align-items:center;
-    gap:clamp(12px, 3vw, 25px);
+    gap:clamp(10px, 2.6vw, 22px);
 }
 
 .nav-links{
@@ -145,12 +199,20 @@ nav{
     transition:right .25s ease;
 }
 
-.nav-links a:hover{
+.nav-links a:hover,
+.nav-links a[aria-current="true"]{
     color:var(--text);
 }
 
-.nav-links a:hover::after{
+.nav-links a:hover::after,
+.nav-links a[aria-current="true"]::after{
     right:0;
+}
+
+.social-links{
+    display:flex;
+    align-items:center;
+    gap:8px;
 }
 
 .icon-btn{
@@ -167,7 +229,7 @@ nav{
     font-size:16px;
     line-height:1;
     flex-shrink:0;
-    transition:transform .2s ease,border-color .2s ease,opacity .2s ease;
+    transition:transform .2s ease,border-color .2s ease,opacity .2s ease,color .2s ease;
 }
 
 @media(hover:hover){
@@ -540,6 +602,8 @@ footer{
 
 <body>
 
+<a class="skip-link" href="#main">Skip to content</a>
+
 <header>
     <div class="container">
         <nav>
@@ -553,6 +617,24 @@ footer{
                 <div class="nav-links">
                     <a href="#projects">Projects</a>
                     <a href="#skills">Skills</a>
+                </div>
+
+                <div class="social-links">
+                    <a
+                        class="icon-btn"
+                        href="https://github.com/abhinavxpandey"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="GitHub"
+                        title="GitHub"
+                    ><svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.73.5.5 5.73.5 12c0 5.09 3.29 9.4 7.86 10.93.57.1.78-.25.78-.55 0-.27-.01-1.15-.02-2.09-3.2.7-3.88-1.36-3.88-1.36-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.71.08-.71 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.71 1.26 3.37.96.1-.74.4-1.26.73-1.55-2.55-.29-5.23-1.28-5.23-5.69 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.04 11.04 0 0 1 2.9-.39c.98 0 1.97.13 2.9.39 2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.24 2.76.12 3.05.74.8 1.19 1.83 1.19 3.09 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.07.78 2.15 0 1.55-.01 2.8-.01 3.18 0 .3.2.66.79.55A10.52 10.52 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5z"/></svg></a>
+
+                    <a
+                        class="icon-btn"
+                        href="mailto:emailtoabhinavpandey@gmail.com"
+                        aria-label="Email"
+                        title="Email"
+                    ><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></a>
                 </div>
 
                 <button
@@ -569,7 +651,7 @@ footer{
 </header>
 
 
-<main>
+<main id="main">
 
     <!-- INTRODUCTION -->
 
@@ -689,23 +771,21 @@ footer{
 
 <script>
 const button = document.getElementById("themeToggle");
-const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-const savedTheme = localStorage.getItem("theme");
+const themeColorMeta = document.getElementById("themeColorMeta");
 
-if (savedTheme === "dark" || (!savedTheme && prefersDark)) {
-    document.body.classList.add("dark");
-    button.textContent = "☀";
+function syncThemeColor(){
+    const isDark = document.documentElement.classList.contains("dark");
+    themeColorMeta.setAttribute("content", isDark ? "#0e0f10" : "#ffffff");
+    button.textContent = isDark ? "☀" : "☾";
 }
 
+syncThemeColor();
+
 button.addEventListener("click", () => {
-
-    document.body.classList.toggle("dark");
-
-    const isDark = document.body.classList.contains("dark");
-
-    button.textContent = isDark ? "☀" : "☾";
-
+    document.documentElement.classList.toggle("dark");
+    const isDark = document.documentElement.classList.contains("dark");
     localStorage.setItem("theme", isDark ? "dark" : "light");
+    syncThemeColor();
 });
 
 const toTop = document.getElementById("toTop");
@@ -724,6 +804,24 @@ window.addEventListener("scroll", () => {
 toTop.addEventListener("click", () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
 });
+
+const sections = document.querySelectorAll("main section[id]");
+const navLinks = document.querySelectorAll(".nav-links a");
+
+if (sections.length && "IntersectionObserver" in window) {
+    const sectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                navLinks.forEach((link) => {
+                    const match = link.getAttribute("href") === "#" + entry.target.id;
+                    link.setAttribute("aria-current", match ? "true" : "false");
+                });
+            }
+        });
+    }, { rootMargin: "-40% 0px -55% 0px" });
+
+    sections.forEach((s) => sectionObserver.observe(s));
+}
 </script>
 
 </body>
