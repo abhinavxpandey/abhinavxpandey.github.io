@@ -16,6 +16,8 @@
     --line:#e8e8e8;
     --border:#dedede;
     --shadow:rgba(0,0,0,.06);
+    --accent:#3452d9;
+    --accent-soft:rgba(52,82,217,.10);
 
     /* fluid spacing/type tokens */
     --gutter:clamp(20px, 6vw, 48px);
@@ -23,15 +25,17 @@
 }
 
 body.dark{
-    --bg:#101112;
-    --surface:#151617;
-    --soft:#1b1d1f;
+    --bg:#0e0f10;
+    --surface:#151618;
+    --soft:#1a1c1e;
     --text:#f2f2f0;
     --muted:#a7a7a3;
     --faint:#777;
-    --line:#292b2d;
-    --border:#343638;
-    --shadow:rgba(0,0,0,.25);
+    --line:#28292b;
+    --border:#333537;
+    --shadow:rgba(0,0,0,.3);
+    --accent:#8fa4ff;
+    --accent-soft:rgba(143,164,255,.12);
 }
 
 *{
@@ -64,8 +68,13 @@ img{
     display:block;
 }
 
+::selection{
+    background:var(--accent-soft);
+    color:var(--text);
+}
+
 :focus-visible{
-    outline:2px solid var(--text);
+    outline:2px solid var(--accent);
     outline-offset:3px;
 }
 
@@ -120,15 +129,31 @@ nav{
 }
 
 .nav-links a{
+    position:relative;
     transition:color .2s ease;
     padding:8px 0;
+}
+
+.nav-links a::after{
+    content:"";
+    position:absolute;
+    left:0;
+    right:100%;
+    bottom:4px;
+    height:1px;
+    background:var(--accent);
+    transition:right .25s ease;
 }
 
 .nav-links a:hover{
     color:var(--text);
 }
 
-.theme-toggle{
+.nav-links a:hover::after{
+    right:0;
+}
+
+.icon-btn{
     width:38px;
     height:38px;
     border:1px solid var(--border);
@@ -140,30 +165,57 @@ nav{
     align-items:center;
     justify-content:center;
     font-size:16px;
+    line-height:1;
     flex-shrink:0;
-    transition:transform .2s ease,border-color .2s ease;
+    transition:transform .2s ease,border-color .2s ease,opacity .2s ease;
 }
 
 @media(hover:hover){
-    .theme-toggle:hover{
+    .icon-btn:hover{
         transform:translateY(-1px);
-        border-color:var(--text);
+        border-color:var(--accent);
+        color:var(--accent);
     }
 }
 
 /* Hero */
 
 .hero{
+    position:relative;
     padding:clamp(56px, 14vw, 125px) 0 clamp(48px, 11vw, 110px);
     border-bottom:1px solid var(--line);
+    overflow:hidden;
 }
 
-.eyebrow{
-    font-family:Georgia,"Times New Roman",serif;
-    color:var(--muted);
-    font-size:clamp(13px, 3.4vw, 14px);
-    margin-bottom:clamp(14px, 3.5vw, 22px);
-    letter-spacing:.02em;
+.hero::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background-image:radial-gradient(var(--border) 1px, transparent 1px);
+    background-size:26px 26px;
+    -webkit-mask-image:radial-gradient(ellipse 70% 60% at 100% 0%, #000 0%, transparent 70%);
+    mask-image:radial-gradient(ellipse 70% 60% at 100% 0%, #000 0%, transparent 70%);
+    opacity:.5;
+    pointer-events:none;
+}
+
+.hero .container{
+    position:relative;
+}
+
+.hero-inner{
+    animation:rise .7s cubic-bezier(.2,.7,.2,1) both;
+}
+
+@keyframes rise{
+    from{
+        opacity:0;
+        transform:translateY(14px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
 }
 
 .hero h1{
@@ -200,8 +252,9 @@ nav{
     top:8px;
     width:7px;
     height:7px;
-    background:var(--text);
+    background:var(--accent);
     border-radius:50%;
+    box-shadow:0 0 0 4px var(--accent-soft);
 }
 
 .education-status{
@@ -271,12 +324,41 @@ h2{
     }
 }
 
+.project-card.is-empty{
+    border-style:dashed;
+    display:flex;
+    align-items:flex-start;
+    gap:clamp(14px, 3.5vw, 20px);
+}
+
+@media(hover:hover){
+    .project-card.is-empty:hover{
+        transform:none;
+        box-shadow:none;
+        border-color:var(--accent);
+    }
+}
+
+.empty-mark{
+    flex-shrink:0;
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    border:1px solid var(--border);
+    color:var(--faint);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:16px;
+}
+
 .project-top{
     display:flex;
     align-items:flex-start;
     justify-content:space-between;
     gap:16px;
     flex-wrap:wrap;
+    flex:1;
 }
 
 .project-card h3{
@@ -330,6 +412,7 @@ h2{
 .skill-tag{
     display:inline-flex;
     align-items:center;
+    gap:7px;
     padding:8px 13px;
     border:1px solid var(--border);
     border-radius:999px;
@@ -340,12 +423,27 @@ h2{
     transition:transform .2s ease,background .2s ease,color .2s ease,border-color .2s ease;
 }
 
+.skill-tag::before{
+    content:"";
+    width:5px;
+    height:5px;
+    border-radius:50%;
+    background:var(--accent);
+    opacity:.65;
+    flex-shrink:0;
+    transition:opacity .2s ease;
+}
+
 @media(hover:hover){
     .skill-tag:hover{
         transform:translateY(-1px);
         background:var(--surface);
         color:var(--text);
-        border-color:var(--muted);
+        border-color:var(--accent);
+    }
+
+    .skill-tag:hover::before{
+        opacity:1;
     }
 }
 
@@ -356,6 +454,26 @@ footer{
     padding-bottom:calc(clamp(24px, 5vw, 35px) + env(safe-area-inset-bottom));
     color:var(--faint);
     font-size:13px;
+}
+
+/* Back to top */
+
+.to-top{
+    position:fixed;
+    right:clamp(16px, 4vw, 28px);
+    bottom:clamp(16px, 4vw, 28px);
+    z-index:30;
+    opacity:0;
+    visibility:hidden;
+    transform:translateY(8px);
+    transition:opacity .25s ease,transform .25s ease,visibility .25s;
+    padding-bottom:env(safe-area-inset-bottom);
+}
+
+.to-top.visible{
+    opacity:1;
+    visibility:visible;
+    transform:translateY(0);
 }
 
 /* Small phones */
@@ -387,10 +505,6 @@ footer{
         min-height:56px;
     }
 
-    .hero{
-        border-bottom:1px solid var(--line);
-    }
-
     .section-heading{
         display:block;
     }
@@ -409,17 +523,8 @@ footer{
         margin-top:10px;
     }
 
-    .skills-grid{
-        grid-template-columns:1fr;
-    }
-
-    .skill{
-        padding:16px 0;
-        font-size:14px;
-    }
-
-    .skill:nth-child(odd){
-        margin-right:0;
+    .project-card.is-empty{
+        gap:14px;
     }
 }
 
@@ -427,6 +532,7 @@ footer{
     *{
         transition:none !important;
         scroll-behavior:auto !important;
+        animation:none !important;
     }
 }
 </style>
@@ -450,7 +556,7 @@ footer{
                 </div>
 
                 <button
-                    class="theme-toggle"
+                    class="icon-btn"
                     id="themeToggle"
                     aria-label="Toggle night mode"
                     title="Toggle night mode"
@@ -469,6 +575,7 @@ footer{
 
     <section class="hero">
         <div class="container">
+          <div class="hero-inner">
 
             <h1>
                 Abhinav Pandey
@@ -494,6 +601,7 @@ footer{
 
             </div>
 
+          </div>
         </div>
     </section>
 
@@ -513,20 +621,24 @@ footer{
                 </div>
             </div>
 
-            <article class="project-card">
+            <article class="project-card is-empty">
+
+                <div class="empty-mark" aria-hidden="true">+</div>
 
                 <div class="project-top">
-                    <h3>Projects will appear here</h3>
+                    <div>
+                        <h3>Projects will appear here</h3>
+
+                        <p>
+                            This section will contain selected software projects,
+                            with a short description, technologies, and links.
+                        </p>
+                    </div>
 
                     <span class="status">
                         Coming soon
                     </span>
                 </div>
-
-                <p>
-                    This section will contain selected software projects,
-                    with a short description, technologies, and links.
-                </p>
 
             </article>
 
@@ -573,13 +685,14 @@ footer{
     </div>
 </footer>
 
+<button class="icon-btn to-top" id="toTop" aria-label="Back to top" title="Back to top">↑</button>
 
 <script>
 const button = document.getElementById("themeToggle");
-
+const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
 const savedTheme = localStorage.getItem("theme");
 
-if (savedTheme === "dark") {
+if (savedTheme === "dark" || (!savedTheme && prefersDark)) {
     document.body.classList.add("dark");
     button.textContent = "☀";
 }
@@ -593,6 +706,23 @@ button.addEventListener("click", () => {
     button.textContent = isDark ? "☀" : "☾";
 
     localStorage.setItem("theme", isDark ? "dark" : "light");
+});
+
+const toTop = document.getElementById("toTop");
+let ticking = false;
+
+window.addEventListener("scroll", () => {
+    if (!ticking) {
+        window.requestAnimationFrame(() => {
+            toTop.classList.toggle("visible", window.scrollY > 600);
+            ticking = false;
+        });
+        ticking = true;
+    }
+});
+
+toTop.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
 });
 </script>
 
